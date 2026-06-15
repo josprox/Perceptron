@@ -1,0 +1,14 @@
+# Configuración del Perceptrón - Sistemas Inteligentes
+# Modifica estas variables para probar diferentes escenarios sin alterar el código
+
+# Número de épocas de entrenamiento (ej. 50000, 100000, 150000)
+EPOCHS=100000
+
+# Tasa de aprendizaje (Learning Rate \eta)
+LEARNING_RATE=0.2
+
+# Directorio donde se guardarán las gráficas y resultados
+SAVE_DIR=.
+
+# Frecuencia con la que se imprime el avance del MSE en consola (épocas)
+LOG_INTERVAL=10000
