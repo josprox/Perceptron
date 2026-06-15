@@ -2,7 +2,7 @@
 
 Este repositorio contiene la implementación del algoritmo de entrenamiento del **Perceptrón con Retropropagación (Backpropagation)** desde cero en Python, estructurado bajo el patrón de arquitectura **Modelo-Vista-Controlador (MVC)** y desarrollado en consonancia con los principios **SMART**.
 
-El objetivo es entrenar la neurona artificial para clasificar y predecir correctamente el conjunto de datos de entrenamiento provisto en la práctica institucional de la **UNITEC (Clave: SC8121)**.
+El objetivo es entrenar la neurona artificial para clasificar y predecir correctamente el conjunto de datos de entrenamiento provisto en la práctica institucional de la **UNITEC (Clave: SC8121)**, complementado con configuraciones vía entorno y visualización de fronteras de decisión.
 
 ---
 
@@ -28,9 +28,9 @@ El conjunto de datos de entrenamiento cuenta con 3 variables de entrada y una sa
 ### Hiperparámetros de Entrenamiento:
 *   **Sesgo (Bias):** $X_0 = 1$ asociado al peso $W_0$.
 *   **Pesos Iniciales:** Propuestos de manera aleatoria en el rango $[-1.0, 1.0]$.
-*   **Tasa de Aprendizaje ($\eta$):** $0.2$.
+*   **Tasa de Aprendizaje ($\eta$):** $0.2$ (configurable).
 *   **Función de Activación:** Sigmoide ($\phi(z) = \frac{1}{1 + e^{-z}}$).
-*   **Épocas de Entrenamiento:** 100,000 iteraciones.
+*   **Épocas de Entrenamiento:** 100,000 iteraciones (configurable).
 
 ---
 
@@ -40,44 +40,61 @@ El código está organizado en dos formatos para cumplir tanto con estándares p
 
 ### 1. Estructura Modular (MVC Profesional)
 *   `requirements.txt`: Especifica las dependencias necesarias (`numpy` y `matplotlib`).
+*   `.env`: Archivo de configuración para controlar los parámetros de entrenamiento de forma externa.
 *   `model.py`: **Modelo**. Contiene la representación matemática del perceptrón, los pesos, la activación sigmoidal y el gradiente de retropropagación.
-*   `view.py`: **Vista**. Maneja la salida por consola y exporta las gráficas de evolución del Error Cuadrático Medio (MSE).
-*   `controller.py`: **Controlador**. Coordina el proceso de carga de datos, el ciclo de entrenamiento y la ejecución de las 5 corridas independientes.
+*   `view.py`: **Vista**. Maneja la salida por consola y exporta las gráficas de evolución del Error Cuadrático Medio (MSE) y de la frontera de decisión en 2D.
+*   `controller.py`: **Controlador**. Coordina el proceso de carga de datos, el archivo `.env`, el ciclo de entrenamiento y la ejecución de las 5 corridas independientes.
 *   `main.py`: Punto de entrada del script modular para inicializar y correr todo el experimento.
 
 ### 2. Archivos Finales de Entrega
 *   `Practica_3_SI_Melchor_Jose.py`: Copia integrada y **autocontenida** del desarrollo modular en un solo archivo con comentarios detallados para la revisión académica.
-*   `Practica_3_SI_Melchor_Jose.html`: Reporte interactivo con formato de portada institucional UNITEC, análisis de resultados de 5 corridas, diagrama de flujo en Mermaid y un **simulador interactivo de predicciones en tiempo real**.
+*   `Practica_3_SI_Melchor_Jose.html`: Reporte interactivo con formato de portada institucional UNITEC, análisis de resultados de 5 corridas a 100k épocas, **gráficas de frontera de decisión en 2D** integradas, y un **simulador interactivo de predicciones en tiempo real**.
 
 ---
 
-## 🚀 Instrucciones de Configuración y Ejecución
+## ⚙️ Configuración mediante archivo `.env`
+Puedes cambiar los parámetros del experimento modificando el archivo local `.env`:
+*   `EPOCHS`: Número de iteraciones de entrenamiento (ej. `100000`).
+*   `LEARNING_RATE`: Tasa de aprendizaje $\eta$ (ej. `0.2`).
+*   `SAVE_DIR`: Directorio de guardado de los resultados (ej. `.`).
+*   `LOG_INTERVAL`: Intervalo de épocas para imprimir el MSE en consola (ej. `10000`).
 
-### Requisitos Previos
-Asegúrate de contar con Python 3.8 o superior instalado en tu equipo.
+---
+
+## 📈 Visualización y Frontera de Decisión en 2D
+
+Dado que la tercera variable de entrada ($X_3 = 1$) es una constante para todas las muestras de entrenamiento, la frontera de decisión puede visualizarse fielmente en un plano 2D de dos variables activas ($X_1$ vs $X_2$):
+*   La **línea discontinua** del gráfico representa la frontera de decisión lineal ($z = 0$, donde la probabilidad de activación sigmoidal es de exactamente $0.5$).
+*   El **fondo sombreado** representa la transición de probabilidad de predicción (Rojo = Clase 0, Azul = Clase 1).
+*   Los **puntos coloreados** representan las muestras originales graficadas según sus coordenadas y etiquetadas según su clase.
+
+El script genera automáticamente una gráfica por cada corrida independiente (`decision_boundary_run_1.png` a `decision_boundary_run_5.png`).
+
+---
+
+## 🚀 Instrucciones de Ejecución
 
 ### 1. Instalación de Dependencias
-Abre tu terminal en la carpeta del proyecto e instala los requerimientos necesarios:
+Abre tu terminal en la carpeta del proyecto e instala los requerimientos:
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 2. Ejecutar el Experimento Modular
-Para iniciar el ciclo de entrenamiento modularizado de 5 ejecuciones independientes:
 ```bash
 python main.py
 ```
 
 ### 3. Ejecutar el Script de Entrega
-Para validar de forma independiente el script entregable en un solo archivo:
 ```bash
 python Practica_3_SI_Melchor_Jose.py
 ```
 
 Ambos scripts realizarán el entrenamiento de 100,000 épocas por cada una de las 5 corridas y generarán:
 1.  Gráficos individuales de error: `error_curve_run_1.png` a `error_curve_run_5.png`.
-2.  Un gráfico de error consolidado: `error_curve_combined.png`.
-3.  El archivo `results.json` con las matrices de pesos y resultados históricos de las ejecuciones.
+2.  Gráficos de frontera de decisión: `decision_boundary_run_1.png` a `decision_boundary_run_5.png`.
+3.  Un gráfico de error consolidado: `error_curve_combined.png`.
+4.  El archivo `results.json` con las matrices de pesos y resultados históricos de las ejecuciones.
 
 ---
 
