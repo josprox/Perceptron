@@ -134,8 +134,14 @@ class PerceptronController:
         # Generar gráfico de error de esta corrida
         plot_path = self.view.plot_errors(error_history, run_index, save_dir)
         
-        # Generar gráfico de la frontera de decisión
+        # Generar gráfico de la frontera de decisión en 2D
         self.view.plot_decision_boundary(self.X, self.y, final_weights, run_index, save_dir)
+        
+        # Generar gráfico de la frontera de decisión en 3D
+        self.view.plot_decision_boundary_3d(self.X, self.y, final_weights, run_index, save_dir)
+        
+        # Generar gráfico de la frontera de decisión en 4D (3D + Color)
+        self.view.plot_decision_boundary_4d(self.X, self.y, final_weights, run_index, save_dir)
         
         # Retornar datos resumidos para generar el reporte
         run_data = {

@@ -56,19 +56,31 @@ El código está organizado en dos formatos para cumplir tanto con estándares p
 Puedes cambiar los parámetros del experimento modificando el archivo local `.env`:
 *   `EPOCHS`: Número de iteraciones de entrenamiento (ej. `100000`).
 *   `LEARNING_RATE`: Tasa de aprendizaje $\eta$ (ej. `0.2`).
-*   `SAVE_DIR`: Directorio de guardado de los resultados (ej. `.`).
+*   `SAVE_DIR`: Directorio de guardado de los resultados (se autodefine como `assets` para mantener el espacio ordenado).
 *   `LOG_INTERVAL`: Intervalo de épocas para imprimir el MSE en consola (ej. `10000`).
 
 ---
 
-## 📈 Visualización y Frontera de Decisión en 2D
+## 📈 Visualizaciones de la Frontera de Decisión (2D, 3D y 4D)
 
-Dado que la tercera variable de entrada ($X_3 = 1$) es una constante para todas las muestras de entrenamiento, la frontera de decisión puede visualizarse fielmente en un plano 2D de dos variables activas ($X_1$ vs $X_2$):
-*   La **línea discontinua** del gráfico representa la frontera de decisión lineal ($z = 0$, donde la probabilidad de activación sigmoidal es de exactamente $0.5$).
-*   El **fondo sombreado** representa la transición de probabilidad de predicción (Rojo = Clase 0, Azul = Clase 1).
-*   Los **puntos coloreados** representan las muestras originales graficadas según sus coordenadas y etiquetadas según su clase.
+Para comprender geométricamente el espacio de clasificación aprendido por el perceptrón, el script genera visualizaciones en tres dimensionalidades por cada una de las 5 corridas independientes:
 
-El script genera automáticamente una gráfica por cada corrida independiente (`decision_boundary_run_1.png` a `decision_boundary_run_5.png`).
+1. **Frontera de Decisión en 2D (Plano $X_1 \times X_2$):**
+   * Puesto que la tercera entrada es constante ($X_3 = 1$), se visualiza en 2D.
+   * La **línea discontinua** representa la frontera lineal de decisión ($z = 0$, donde la probabilidad $\hat{y} = 0.5$).
+   * El **fondo sombreado** representa el gradiente de probabilidad de clasificación (Rojo = Clase 0, Azul = Clase 1).
+   * Genera los archivos `assets/decision_boundary_run_1.png` a `assets/decision_boundary_run_5.png`.
+
+2. **Frontera de Decisión en 3D (Espacio $X_1 \times X_2 \times X_3$):**
+   * El espacio de entradas se modela como un espacio tridimensional.
+   * La **superficie translúcida** representa el plano de decisión $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+   * Las muestras se ubican como esferas tridimensionales de color según su clase esperada.
+   * Genera los archivos `assets/decision_boundary_3d_run_1.png` a `assets/decision_boundary_3d_run_5.png`.
+
+3. **Visualización 4D (Espacio 3D + Gradiente de Probabilidad en Color):**
+   * Mapea $X_1, X_2, X_3$ en coordenadas espaciales tridimensionales.
+   * La **cuarta dimensión** (la salida probabilística continua $\hat{y}$) se representa como una densa malla de puntos coloreados según su predicción sigmoidal mediante una escala de color divergente.
+   * Genera los archivos `assets/decision_boundary_4d_run_1.png` a `assets/decision_boundary_4d_run_5.png`.
 
 ---
 
@@ -90,11 +102,11 @@ python main.py
 python Practica_3_SI_Melchor_Jose.py
 ```
 
-Ambos scripts realizarán el entrenamiento de 100,000 épocas por cada una de las 5 corridas y generarán:
-1.  Gráficos individuales de error: `error_curve_run_1.png` a `error_curve_run_5.png`.
-2.  Gráficos de frontera de decisión: `decision_boundary_run_1.png` a `decision_boundary_run_5.png`.
-3.  Un gráfico de error consolidado: `error_curve_combined.png`.
-4.  El archivo `results.json` con las matrices de pesos y resultados históricos de las ejecuciones.
+Ambos scripts realizarán el entrenamiento de 100,000 épocas por cada una de las 5 corridas y generarán dentro de la carpeta `assets/`:
+1.  Gráficos individuales de error: `assets/error_curve_run_1.png` a `assets/error_curve_run_5.png`.
+2.  Gráficos de frontera de decisión en 2D, 3D y 4D por cada corrida (por ejemplo, `assets/decision_boundary_run_1.png`, `assets/decision_boundary_3d_run_1.png`, `assets/decision_boundary_4d_run_1.png`).
+3.  Un gráfico de error consolidado: `assets/error_curve_combined.png`.
+4.  El archivo `assets/results.json` con las matrices de pesos y resultados históricos de las ejecuciones.
 
 ---
 

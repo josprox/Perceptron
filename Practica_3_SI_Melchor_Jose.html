@@ -7,6 +7,22 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
+    <!-- MathJax para renderizar fórmulas matemáticas en LaTeX de forma nativa en el navegador -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <!-- Mermaid.js para diagramas -->
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -262,12 +278,10 @@
 
         .formula {
             background-color: #f1f5f9;
-            padding: 1rem;
+            padding: 1.25rem;
             border-left: 4px solid var(--primary-light);
             border-radius: 0 8px 8px 0;
-            font-family: 'Fira Code', monospace;
-            font-size: 1rem;
-            margin: 1.25rem 0;
+            margin: 1.5rem 0;
             text-align: center;
         }
 
@@ -824,21 +838,25 @@
             </p>
             <ol style="margin-left: 2rem; margin-bottom: 1.5rem;">
                 <li>
-                    <strong>Entradas (\(X_0, X_1, X_2, \dots, X_n\)):</strong> Representan los datos que recibe la neurona. Por convención, \(X_0 = 1\) actúa como la entrada para el sesgo (bias), lo que desplaza la frontera de decisión fuera del origen espacial.
+                    <strong>Entradas ($X_0, X_1, X_2, \dots, X_n$):</strong> Representan los datos que recibe la neurona. Por convención, $X_0 = 1$ actúa como la entrada para el sesgo (bias), lo que desplaza la frontera de decisión fuera del origen espacial.
                 </li>
                 <li>
-                    <strong>Pesos sinápticos (\(W_0, W_1, W_2, \dots, W_n\)):</strong> Indican la fuerza o importancia de la conexión de cada entrada. Estos valores se ajustan dinámicamente durante el proceso de aprendizaje.
+                    <strong>Pesos sinápticos ($W_0, W_1, W_2, \dots, W_n$):</strong> Indican la fuerza o importancia de la conexión de cada entrada. Estos valores se ajustan dinámicamente durante el proceso de aprendizaje.
                 </li>
                 <li>
                     <strong>Función de agregación neta (Suma ponderada):</strong> Realiza la suma de las entradas multiplicadas por sus pesos respectivos. Matemáticamente se modela como el producto punto:
-                    <div class="formula">z = X_0 W_0 + X_1 W_1 + X_2 W_2 + X_3 W_3 = \sum_{i=0}^{n} X_i W_i</div>
+                    <div class="formula">
+                        $$z = X_0 W_0 + X_1 W_1 + X_2 W_2 + X_3 W_3 = \sum_{i=0}^{3} X_i W_i$$
+                    </div>
                 </li>
                 <li>
-                    <strong>Función de activación (\(\phi(z)\)):</strong> Transforma la suma ponderada \(z\) para acotar la salida de la neurona. En esta práctica se utiliza la <strong>función sigmoidal</strong>, la cual mapea cualquier valor real al intervalo continuo \((0, 1)\):
-                    <div class="formula">\phi(z) = \frac{1}{1 + e^{-z}}</div>
+                    <strong>Función de activación ($\phi(z)$):</strong> Transforma la suma ponderada $z$ para acotar la salida de la neurona. En esta práctica se utiliza la <strong>función sigmoidal</strong>, la cual mapea cualquier valor real al intervalo continuo $(0, 1)$:
+                    <div class="formula">
+                        $$\phi(z) = \frac{1}{1 + e^{-z}}$$
+                    </div>
                 </li>
                 <li>
-                    <strong>Salida (\(\hat{y}\)):</strong> Es el valor final producido por la neurona (\(\hat{y} = \phi(z)\)). En esta práctica representa la predicción continua obtenida tras la propagación.
+                    <strong>Salida ($\hat{y}$):</strong> Es el valor final producido por la neurona ($\hat{y} = \phi(z)$). En esta práctica representa la predicción continua obtenida tras la propagación.
                 </li>
             </ol>
         </section>
@@ -920,10 +938,10 @@ graph TD
                             </tr>
                             <tr>
                                 <td><strong>Valor Final</strong></td>
-                                <td>-2.029580</td>
-                                <td>+10.458823</td>
-                                <td>-0.113766</td>
-                                <td>-3.086619</td>
+                                <td>-2.474801</td>
+                                <td>+10.458634</td>
+                                <td>-0.113518</td>
+                                <td>-2.641441</td>
                             </tr>
                         </tbody>
                     </table>
@@ -968,8 +986,8 @@ graph TD
                                 <td>0</td>
                                 <td>1</td>
                                 <td>1.0</td>
-                                <td>0.995239</td>
-                                <td>+0.004761</td>
+                                <td>0.995238</td>
+                                <td>+0.004762</td>
                             </tr>
                             <tr>
                                 <td>d</td>
@@ -977,18 +995,38 @@ graph TD
                                 <td>1</td>
                                 <td>1</td>
                                 <td>0.0</td>
-                                <td>0.005325</td>
-                                <td>-0.005325</td>
+                                <td>0.005326</td>
+                                <td>-0.005326</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Gráfico de Frontera de Decisión (Ejecución 1):</h4>
-                <div class="image-container">
-                    <img src="decision_boundary_run_1.png" alt="Frontera de decisión de la corrida 1" class="result-image">
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 1):</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
+                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                </p>
+                <div class="graphs-grid">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_1.png" alt="Frontera de decisión de la corrida 1" class="result-image">
+                        <div class="image-caption">
+                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_1.png" alt="Frontera de decisión 3D de la corrida 1" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                </div>
+                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
+                    <img src="assets/decision_boundary_4d_run_1.png" alt="Frontera de decisión 4D de la corrida 1" class="result-image">
                     <div class="image-caption">
-                        Figura 2.1: Espacio de decisión e hiperplano de separación binario para la Ejecución 1.
+                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
                     </div>
                 </div>
             </div>
@@ -1012,318 +1050,18 @@ graph TD
                         <tbody>
                             <tr>
                                 <td><strong>Valor Inicial</strong></td>
-                                <td>-0.666368</td>
-                                <td>-0.291198</td>
-                                <td>+0.927352</td>
-                                <td>+0.463925</td>
+                                <td>-0.966148</td>
+                                <td>-0.681177</td>
+                                <td>-0.510245</td>
+                                <td>-0.822764</td>
                                 <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
                             </tr>
                             <tr>
                                 <td><strong>Valor Final</strong></td>
-                                <td>-3.123346</td>
-                                <td>+10.458734</td>
-                                <td>-0.113327</td>
-                                <td>-1.993052</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Muestra</th>
-                                <th>Entrada X1</th>
-                                <th>Entrada X2</th>
-                                <th>Entrada X3</th>
-                                <th>Salida Esperada (Y)</th>
-                                <th>Salida Obtenida (&Ycirc;)</th>
-                                <th>Diferencia / Error</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>0.0</td>
-                                <td>0.005962</td>
-                                <td>-0.005962</td>
-                            </tr>
-                            <tr>
-                                <td>b</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1.0</td>
-                                <td>0.994670</td>
-                                <td>+0.005330</td>
-                            </tr>
-                            <tr>
-                                <td>c</td>
-                                <td>1</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1.0</td>
-                                <td>0.995238</td>
-                                <td>+0.004762</td>
-                            </tr>
-                            <tr>
-                                <td>d</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>0.0</td>
-                                <td>0.005326</td>
-                                <td>-0.005326</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Gráfico de Frontera de Decisión (Ejecución 2):</h4>
-                <div class="image-container">
-                    <img src="decision_boundary_run_2.png" alt="Frontera de decisión de la corrida 2" class="result-image">
-                    <div class="image-caption">
-                        Figura 2.2: Espacio de decisión e hiperplano de separación binario para la Ejecución 2.
-                    </div>
-                </div>
-            </div>
-
-            <!-- EJECUCIÓN 3 -->
-            <div id="run-3" class="tab-content">
-                <div class="tab-header-print">Ejecución 3</div>
-                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 3):</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Parámetro</th>
-                                <th>W0 (Bias/Sesgo)</th>
-                                <th>W1 (Entrada X1)</th>
-                                <th>W2 (Entrada X2)</th>
-                                <th>W3 (Entrada X3)</th>
-                                <th>Error Final (MSE)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Valor Inicial</strong></td>
-                                <td>-0.559686</td>
-                                <td>-0.100531</td>
-                                <td>-0.409718</td>
-                                <td>-0.772568</td>
-                                <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Valor Final</strong></td>
-                                <td>-2.451712</td>
-                                <td>+10.458800</td>
+                                <td>-2.629801</td>
+                                <td>+10.458620</td>
                                 <td>-0.113550</td>
-                                <td>-2.664595</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Muestra</th>
-                                <th>Entrada X1</th>
-                                <th>Entrada X2</th>
-                                <th>Entrada X3</th>
-                                <th>Salida Esperada (Y)</th>
-                                <th>Salida Obtenida (&Ycirc;)</th>
-                                <th>Diferencia / Error</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>0.0</td>
-                                <td>0.005962</td>
-                                <td>-0.005962</td>
-                            </tr>
-                            <tr>
-                                <td>b</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1.0</td>
-                                <td>0.994669</td>
-                                <td>+0.005331</td>
-                            </tr>
-                            <tr>
-                                <td>c</td>
-                                <td>1</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1.0</td>
-                                <td>0.995239</td>
-                                <td>+0.004761</td>
-                            </tr>
-                            <tr>
-                                <td>d</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>0.0</td>
-                                <td>0.005326</td>
-                                <td>-0.005326</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Gráfico de Frontera de Decisión (Ejecución 3):</h4>
-                <div class="image-container">
-                    <img src="decision_boundary_run_3.png" alt="Frontera de decisión de la corrida 3" class="result-image">
-                    <div class="image-caption">
-                        Figura 2.3: Espacio de decisión e hiperplano de separación binario para la Ejecución 3.
-                    </div>
-                </div>
-            </div>
-
-            <!-- EJECUCIÓN 4 -->
-            <div id="run-4" class="tab-content">
-                <div class="tab-header-print">Ejecución 4</div>
-                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 4):</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Parámetro</th>
-                                <th>W0 (Bias/Sesgo)</th>
-                                <th>W1 (Entrada X1)</th>
-                                <th>W2 (Entrada X2)</th>
-                                <th>W3 (Entrada X3)</th>
-                                <th>Error Final (MSE)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Valor Inicial</strong></td>
-                                <td>-0.606065</td>
-                                <td>-0.739134</td>
-                                <td>+0.715902</td>
-                                <td>-0.818808</td>
-                                <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Valor Final</strong></td>
-                                <td>-2.451827</td>
-                                <td>+10.458690</td>
-                                <td>-0.113290</td>
-                                <td>-2.664570</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Muestra</th>
-                                <th>Entrada X1</th>
-                                <th>Entrada X2</th>
-                                <th>Entrada X3</th>
-                                <th>Salida Esperada (Y)</th>
-                                <th>Salida Obtenida (&Ycirc;)</th>
-                                <th>Diferencia / Error</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>0.0</td>
-                                <td>0.005962</td>
-                                <td>-0.005962</td>
-                            </tr>
-                            <tr>
-                                <td>b</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1.0</td>
-                                <td>0.994670</td>
-                                <td>+0.005330</td>
-                            </tr>
-                            <tr>
-                                <td>c</td>
-                                <td>1</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1.0</td>
-                                <td>0.995238</td>
-                                <td>+0.004762</td>
-                            </tr>
-                            <tr>
-                                <td>d</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>0.0</td>
-                                <td>0.005327</td>
-                                <td>-0.005327</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Gráfico de Frontera de Decisión (Ejecución 4):</h4>
-                <div class="image-container">
-                    <img src="decision_boundary_run_4.png" alt="Frontera de decisión de la corrida 4" class="result-image">
-                    <div class="image-caption">
-                        Figura 2.4: Espacio de decisión e hiperplano de separación binario para la Ejecución 4.
-                    </div>
-                </div>
-            </div>
-
-            <!-- EJECUCIÓN 5 -->
-            <div id="run-5" class="tab-content">
-                <div class="tab-header-print">Ejecución 5</div>
-                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 5):</h4>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Parámetro</th>
-                                <th>W0 (Bias/Sesgo)</th>
-                                <th>W1 (Entrada X1)</th>
-                                <th>W2 (Entrada X2)</th>
-                                <th>W3 (Entrada X3)</th>
-                                <th>Error Final (MSE)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Valor Inicial</strong></td>
-                                <td>-0.502194</td>
-                                <td>+0.192059</td>
-                                <td>-0.493835</td>
-                                <td>+0.401461</td>
-                                <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Valor Final</strong></td>
-                                <td>-3.009961</td>
-                                <td>+10.458822</td>
-                                <td>-0.113645</td>
-                                <td>-2.106306</td>
+                                <td>-2.486417</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1368,8 +1106,248 @@ graph TD
                                 <td>0</td>
                                 <td>1</td>
                                 <td>1.0</td>
-                                <td>0.995239</td>
-                                <td>+0.004761</td>
+                                <td>0.995238</td>
+                                <td>+0.004762</td>
+                            </tr>
+                            <tr>
+                                <td>d</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0.0</td>
+                                <td>0.005326</td>
+                                <td>-0.005326</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 2):</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
+                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                </p>
+                <div class="graphs-grid">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_2.png" alt="Frontera de decisión de la corrida 2" class="result-image">
+                        <div class="image-caption">
+                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_2.png" alt="Frontera de decisión 3D de la corrida 2" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                </div>
+                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
+                    <img src="assets/decision_boundary_4d_run_2.png" alt="Frontera de decisión 4D de la corrida 2" class="result-image">
+                    <div class="image-caption">
+                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJECUCIÓN 3 -->
+            <div id="run-3" class="tab-content">
+                <div class="tab-header-print">Ejecución 3</div>
+                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 3):</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Parámetro</th>
+                                <th>W0 (Bias/Sesgo)</th>
+                                <th>W1 (Entrada X1)</th>
+                                <th>W2 (Entrada X2)</th>
+                                <th>W3 (Entrada X3)</th>
+                                <th>Error Final (MSE)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Valor Inicial</strong></td>
+                                <td>+0.407079</td>
+                                <td>-0.096130</td>
+                                <td>+0.944535</td>
+                                <td>+0.056305</td>
+                                <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Valor Final</strong></td>
+                                <td>-2.382800</td>
+                                <td>+10.458720</td>
+                                <td>-0.113357</td>
+                                <td>-2.733575</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Muestra</th>
+                                <th>Entrada X1</th>
+                                <th>Entrada X2</th>
+                                <th>Entrada X3</th>
+                                <th>Salida Esperada (Y)</th>
+                                <th>Salida Obtenida (&Ycirc;)</th>
+                                <th>Diferencia / Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>a</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0.0</td>
+                                <td>0.005962</td>
+                                <td>-0.005962</td>
+                            </tr>
+                            <tr>
+                                <td>b</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1.0</td>
+                                <td>0.994670</td>
+                                <td>+0.005330</td>
+                            </tr>
+                            <tr>
+                                <td>c</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1.0</td>
+                                <td>0.995238</td>
+                                <td>+0.004762</td>
+                            </tr>
+                            <tr>
+                                <td>d</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0.0</td>
+                                <td>0.005326</td>
+                                <td>-0.005326</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 3):</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
+                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                </p>
+                <div class="graphs-grid">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_3.png" alt="Frontera de decisión de la corrida 3" class="result-image">
+                        <div class="image-caption">
+                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_3.png" alt="Frontera de decisión 3D de la corrida 3" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                </div>
+                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
+                    <img src="assets/decision_boundary_4d_run_3.png" alt="Frontera de decisión 4D de la corrida 3" class="result-image">
+                    <div class="image-caption">
+                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJECUCIÓN 4 -->
+            <div id="run-4" class="tab-content">
+                <div class="tab-header-print">Ejecución 4</div>
+                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 4):</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Parámetro</th>
+                                <th>W0 (Bias/Sesgo)</th>
+                                <th>W1 (Entrada X1)</th>
+                                <th>W2 (Entrada X2)</th>
+                                <th>W3 (Entrada X3)</th>
+                                <th>Error Final (MSE)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Valor Inicial</strong></td>
+                                <td>+0.644181</td>
+                                <td>+0.834950</td>
+                                <td>-0.618007</td>
+                                <td>-0.029330</td>
+                                <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Valor Final</strong></td>
+                                <td>-2.221378</td>
+                                <td>+10.458951</td>
+                                <td>-0.113761</td>
+                                <td>-2.894888</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Muestra</th>
+                                <th>Entrada X1</th>
+                                <th>Entrada X2</th>
+                                <th>Entrada X3</th>
+                                <th>Salida Esperada (Y)</th>
+                                <th>Salida Obtenida (&Ycirc;)</th>
+                                <th>Diferencia / Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>a</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0.0</td>
+                                <td>0.005963</td>
+                                <td>-0.005963</td>
+                            </tr>
+                            <tr>
+                                <td>b</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1.0</td>
+                                <td>0.994669</td>
+                                <td>+0.005331</td>
+                            </tr>
+                            <tr>
+                                <td>c</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1.0</td>
+                                <td>0.995240</td>
+                                <td>+0.004760</td>
                             </tr>
                             <tr>
                                 <td>d</td>
@@ -1384,11 +1362,151 @@ graph TD
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Gráfico de Frontera de Decisión (Ejecución 5):</h4>
-                <div class="image-container">
-                    <img src="decision_boundary_run_5.png" alt="Frontera de decisión de la corrida 5" class="result-image">
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 4):</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
+                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                </p>
+                <div class="graphs-grid">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_4.png" alt="Frontera de decisión de la corrida 4" class="result-image">
+                        <div class="image-caption">
+                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_4.png" alt="Frontera de decisión 3D de la corrida 4" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                </div>
+                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
+                    <img src="assets/decision_boundary_4d_run_4.png" alt="Frontera de decisión 4D de la corrida 4" class="result-image">
                     <div class="image-caption">
-                        Figura 2.5: Espacio de decisión e hiperplano de separación binario para la Ejecución 5.
+                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJECUCIÓN 5 -->
+            <div id="run-5" class="tab-content">
+                <div class="tab-header-print">Ejecución 5</div>
+                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 5):</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Parámetro</th>
+                                <th>W0 (Bias/Sesgo)</th>
+                                <th>W1 (Entrada X1)</th>
+                                <th>W2 (Entrada X2)</th>
+                                <th>W3 (Entrada X3)</th>
+                                <th>Error Final (MSE)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Valor Inicial</strong></td>
+                                <td>-0.224152</td>
+                                <td>+0.299919</td>
+                                <td>+0.323366</td>
+                                <td>-0.695316</td>
+                                <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.875 × 10⁻⁵</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Valor Final</strong></td>
+                                <td>-2.322639</td>
+                                <td>+10.458893</td>
+                                <td>-0.113390</td>
+                                <td>-2.793804</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Muestra</th>
+                                <th>Entrada X1</th>
+                                <th>Entrada X2</th>
+                                <th>Entrada X3</th>
+                                <th>Salida Esperada (Y)</th>
+                                <th>Salida Obtenida (&Ycirc;)</th>
+                                <th>Diferencia / Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>a</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0.0</td>
+                                <td>0.005962</td>
+                                <td>-0.005962</td>
+                            </tr>
+                            <tr>
+                                <td>b</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1.0</td>
+                                <td>0.994670</td>
+                                <td>+0.005330</td>
+                            </tr>
+                            <tr>
+                                <td>c</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1.0</td>
+                                <td>0.995239</td>
+                                <td>+0.004761</td>
+                            </tr>
+                            <tr>
+                                <td>d</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0.0</td>
+                                <td>0.005326</td>
+                                <td>-0.005326</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 5):</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
+                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                </p>
+                <div class="graphs-grid">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_5.png" alt="Frontera de decisión de la corrida 5" class="result-image">
+                        <div class="image-caption">
+                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_5.png" alt="Frontera de decisión 3D de la corrida 5" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                </div>
+                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
+                    <img src="assets/decision_boundary_4d_run_5.png" alt="Frontera de decisión 4D de la corrida 5" class="result-image">
+                    <div class="image-caption">
+                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
                     </div>
                 </div>
             </div>
@@ -1399,20 +1517,20 @@ graph TD
                 La siguiente gráfica muestra la evolución temporal del Error Cuadrático Medio (MSE) a lo largo de las <strong>100,000 épocas</strong> de entrenamiento para las 5 ejecuciones independientes (en escala logarítmica para una mejor visualización de la rápida caída inicial):
             </p>
             <div class="image-container">
-                <img src="error_curve_combined.png" alt="Evolución del MSE" class="result-image">
+                <img src="assets/error_curve_combined.png" alt="Evolución del MSE" class="result-image">
                 <div class="image-caption">
                     Figura 3: Gráfica combinada de error (MSE) contra el número de épocas en escala logarítmica para 100k épocas.
                 </div>
             </div>
             
-            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Análisis de Convergencia de los Pesos y la Frontera de Decisión</h3>
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Análisis de Convergencia de los Pesos y las Fronteras de Decisión</h3>
             <p>
-                Al analizar el estado final de los pesos sinápticos tras 100,000 épocas, se reafirman las conclusiones con mayor precisión:
+                Al analizar el estado final de los pesos sinápticos tras 100,000 épocas en conjunto con las visualizaciones multidimensionales generadas, podemos extraer importantes conclusiones geométricas y matemáticas:
             </p>
             <ul>
-                <li><strong>\(W_1\) (Entrada X1):</strong> Converge consistentemente a un valor positivo mayor (\(\approx +10.46\)). Esto refuerza que la primera variable determina la salida. En los gráficos de frontera de decisión (Figuras 2.1 a 2.5), se aprecia que la línea divisoria vertical separa perfectamente el lado izquierdo (donde \(X_1 = 0\), regiones rojas de clase 0) del lado derecho (donde \(X_1 = 1\), regiones azules de clase 1).</li>
-                <li><strong>\(W_2\) (Entrada X2):</strong> Se aproxima a cero (\(\approx -0.11\)), demostrando ser irrelevante. En el gráfico, esto se traduce en que la frontera de decisión es prácticamente vertical (paralela al eje vertical \(X_2\)), ya que los cambios en la altura \(X_2\) no afectan el resultado de clasificación de la neurona.</li>
-                <li><strong>\(W_3\) (Entrada X3) y \(W_0\) (Sesgo/Bias):</strong> La suma ponderada \(W_0 + W_3\) se estabiliza de forma robusta alrededor de \(-5.11\) (por ejemplo, \(-2.02 + (-3.08) = -5.10\) en la Ejecución 1). Esto garantiza una activación de la sigmoide de \(\phi(-5.11) \approx 0.0059\), muy cercana al \(0.0\) esperado para las muestras con \(X_1 = 0\).</li>
+                <li><strong>$W_1$ (Entrada X1):</strong> Converge consistentemente a un valor positivo elevado ($\approx +10.46$). Esto confirma que $X_1$ es el predictor primario. En las visualizaciones 2D, se aprecia una frontera vertical perfecta. En 3D y 4D, observamos cómo el plano de decisión corta de forma ortogonal el eje $X_1$ en $0.5$, extendiéndose indefinidamente a lo largo de las demás variables irrelevantes.</li>
+                <li><strong>$W_2$ (Entrada X2):</strong> Se aproxima a cero ($\approx -0.11$). En todos los gráficos de 2D, 3D y 4D, se demuestra que la frontera es paralela a este eje, corroborando visualmente que los cambios en $X_2$ no tienen impacto predictivo alguno.</li>
+                <li><strong>$W_3$ (Entrada X3) y $W_0$ (Sesgo/Bias):</strong> La suma ponderada $W_0 + W_3$ se estabiliza alrededor de $-5.11$. Al ser $X_3 = 1$ constante en las muestras reales, la frontera de decisión en 3D dibuja una superficie que corta el espacio en $X_1 = 0.5$ compensando el bias. En 4D, la nube de puntos revela un gradiente continuo de probabilidad suave gobernado por la función sigmoide, con la transición crítica en el hiperplano $z = 0$.</li>
             </ul>
         </section>
 
@@ -1422,7 +1540,7 @@ graph TD
         <section class="section-card sim-grid-container only-screen">
             <h2 class="section-title">Características Adicionales: Simulador Interactivo</h2>
             <p>
-                Como característica adicional del agente inteligente, se implementó este simulador en tiempo real. Selecciona una de las 5 ejecuciones entrenadas a 100,000 épocas, manipula las entradas mediante los interruptores y observa cómo el perceptrón realiza la suma ponderada \(z\) y calcula la salida predicha \(\hat{y}\) instantáneamente:
+                Como característica adicional del agente inteligente, se implementó este simulador en tiempo real. Selecciona una de las 5 ejecuciones entrenadas a 100,000 épocas, manipula las entradas mediante los interruptores y observa cómo el perceptrón realiza la suma ponderada $z$ y calcula la salida predicha $\hat{y}$ instantáneamente:
             </p>
 
             <div class="sim-grid">
@@ -1475,7 +1593,7 @@ graph TD
                     <div class="output-box">
                         <div style="font-weight: 500; font-size: 0.9rem; color: #64748b;">Salida Obtenida (&Ycirc;):</div>
                         <div class="output-value" id="sim-output-val">0.005963</div>
-                        <div class="output-z" id="sim-math-val">z = -5.116199</div>
+                        <div class="output-z" id="sim-math-val">z = -5.116242</div>
                         <div style="margin-top: 1rem; font-size: 0.85rem; font-weight: 600;" id="sim-class-val">Clasificación: Cerca de 0</div>
                     </div>
                 </div>
@@ -1495,13 +1613,13 @@ graph TD
                     <strong>Eficiencia del Algoritmo:</strong> Se comprobó empíricamente que duplicar las iteraciones a <strong>100,000 épocas</strong> reduce a la mitad el Error Cuadrático Medio ($2.87 \times 10^{-5}$ frente a $5.80 \times 10^{-5}$), lo que incrementa significativamente la precisión de clasificación. El tiempo total de procesamiento en Python sigue siendo inferior a un segundo por corrida, haciendo que sea extremadamente eficiente.
                 </li>
                 <li style="margin-bottom: 1rem;">
-                    <strong>Separabilidad Lineal y Coeficientes:</strong> El conjunto de datos propuesto presenta un comportamiento lineal separable donde el resultado esperado \(Y\) es idéntico al valor de la entrada \(X_1\). La red identificó correctamente esta regla al asignar un peso extremadamente alto a \(W_1\) y un peso cercano a cero a \(W_2\). Esto demuestra la capacidad del perceptrón no solo para clasificar, sino también para realizar análisis de relevancia de características de forma implícita.
+                    <strong>Separabilidad Lineal y Coeficientes:</strong> El conjunto de datos propuesto presenta un comportamiento lineal separable donde el resultado esperado $Y$ es idéntico al valor de la entrada $X_1$. La red identificó correctamente esta regla al asignar un peso extremadamente alto a $W_1$ y un peso cercano a cero a $W_2$. Esto demuestra la capacidad del perceptrón no solo para clasificar, sino también para realizar análisis de relevancia de características de forma implícita.
                 </li>
                 <li style="margin-bottom: 1rem;">
-                    <strong>Impacto de la Inicialización Aleatoria:</strong> Aunque la inicialización aleatoria de pesos conduce a distintas combinaciones algebraicas de valores de pesos finales en cada ejecución (particularmente distribuyendo la compensación del sesgo y \(W_3\)), el comportamiento predictivo final de la neurona se mantiene idéntico. Esto enfatiza la robustez y la convergencia del algoritmo hacia soluciones equivalentes dentro del espacio de búsqueda.
+                    <strong>Impacto de la Inicialización Aleatoria:</strong> Aunque la inicialización aleatoria de pesos conduce a distintas combinaciones algebraicas de valores de pesos finales en cada ejecución (particularmente distribuyendo la compensación del sesgo y $W_3$), el comportamiento predictivo final de la neurona se mantiene idéntico. Esto enfatiza la robustez y la convergencia del algoritmo hacia soluciones equivalentes dentro del espacio de búsqueda.
                 </li>
                 <li style="margin-bottom: 1rem;">
-                    <strong>Arquitectura Limpia y Visualización:</strong> La implementación basada en el patrón de diseño <strong>Modelo-Vista-Controlador (MVC)</strong> y la filosofía <strong>SMART</strong> facilitaron un código estructurado, libre de dependencias complejas. La incorporación de la gráfica 2D de la <strong>frontera de decisión</strong> (Figuras 2.1 a 2.5) proporciona una evidencia visual inequívoca de cómo el perceptrón logra trazar un límite de decisión lineal en el espacio de entradas para clasificar perfectamente las clases esperadas.
+                    <strong>Arquitectura Limpia y Visualización Multi-Dimensional:</strong> La implementación basada en el patrón de diseño <strong>Modelo-Vista-Controlador (MVC)</strong> y la filosofía <strong>SMART</strong> facilitaron un código estructurado y modular. La incorporación de visualizaciones de la <strong>frontera de decisión en 2D, 3D y 4D</strong> proporciona una perspectiva geométrica robusta del aprendizaje, demostrando visualmente cómo el clasificador lineal traza hiperplanos y distribuciones de probabilidad en el espacio continuo para cumplir perfectamente con el conjunto de entrenamiento especificado.
                 </li>
             </ol>
         </section>
@@ -1529,11 +1647,11 @@ graph TD
     <script>
         // Datos de los modelos de las 5 ejecuciones a 100,000 épocas (actualizados con la última corrida)
         const modelRuns = {
-            1: { w0: -2.029580, w1: 10.458823, w2: -0.113766, w3: -3.086619 },
-            2: { w0: -3.123346, w1: 10.458734, w2: -0.113327, w3: -1.993052 },
-            3: { w0: -2.451712, w1: 10.458800, w2: -0.113550, w3: -2.664595 },
-            4: { w0: -2.451827, w1: 10.458690, w2: -0.113290, w3: -2.664570 },
-            5: { w0: -3.009961, w1: 10.458822, w2: -0.113645, w3: -2.106306 }
+            1: { w0: -2.474801, w1: 10.458634, w2: -0.113518, w3: -2.641441 },
+            2: { w0: -2.629801, w1: 10.458620, w2: -0.113550, w3: -2.486417 },
+            3: { w0: -2.382800, w1: 10.458720, w2: -0.113357, w3: -2.733575 },
+            4: { w0: -2.221378, w1: 10.458951, w2: -0.113761, w3: -2.894888 },
+            5: { w0: -2.322639, w1: 10.458893, w2: -0.113390, w3: -2.793804 }
         };
 
         function sigmoid(z) {
