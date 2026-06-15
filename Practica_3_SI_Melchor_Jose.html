@@ -1002,31 +1002,40 @@ graph TD
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 1):</h4>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 1):</h4>
                 <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
-                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                    Evolución del error cuadrático medio (MSE) y las visualizaciones de la frontera de decisión en 2D, 3D y 4D para esta ejecución:
                 </p>
                 <div class="graphs-grid">
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
-                        <img src="assets/decision_boundary_run_1.png" alt="Frontera de decisión de la corrida 1" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
+                        <img src="assets/error_curve_run_1.png" alt="Curva de error MSE corrida 1" class="result-image">
                         <div class="image-caption">
-                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                            Evolución del MSE a lo largo de las 100,000 épocas de entrenamiento.
                         </div>
                     </div>
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                        <img src="assets/decision_boundary_3d_run_1.png" alt="Frontera de decisión 3D de la corrida 1" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_1.png" alt="Frontera de decisión de la corrida 1" class="result-image">
                         <div class="image-caption">
-                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                            Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
                         </div>
                     </div>
                 </div>
-                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
-                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
-                    <img src="assets/decision_boundary_4d_run_1.png" alt="Frontera de decisión 4D de la corrida 1" class="result-image">
-                    <div class="image-caption">
-                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                <div class="graphs-grid" style="margin-top: 1rem;">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_1.png" alt="Frontera de decisión 3D de la corrida 1" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
+                        <img src="assets/decision_boundary_4d_run_1.png" alt="Frontera de decisión 4D de la corrida 1" class="result-image">
+                        <div class="image-caption">
+                            Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1122,31 +1131,40 @@ graph TD
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 2):</h4>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 2):</h4>
                 <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
-                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                    Evolución del error cuadrático medio (MSE) y las visualizaciones de la frontera de decisión en 2D, 3D y 4D para esta ejecución:
                 </p>
                 <div class="graphs-grid">
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
-                        <img src="assets/decision_boundary_run_2.png" alt="Frontera de decisión de la corrida 2" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
+                        <img src="assets/error_curve_run_2.png" alt="Curva de error MSE corrida 2" class="result-image">
                         <div class="image-caption">
-                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                            Evolución del MSE a lo largo de las 100,000 épocas de entrenamiento.
                         </div>
                     </div>
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                        <img src="assets/decision_boundary_3d_run_2.png" alt="Frontera de decisión 3D de la corrida 2" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_2.png" alt="Frontera de decisión de la corrida 2" class="result-image">
                         <div class="image-caption">
-                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                            Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
                         </div>
                     </div>
                 </div>
-                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
-                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
-                    <img src="assets/decision_boundary_4d_run_2.png" alt="Frontera de decisión 4D de la corrida 2" class="result-image">
-                    <div class="image-caption">
-                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                <div class="graphs-grid" style="margin-top: 1rem;">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_2.png" alt="Frontera de decisión 3D de la corrida 2" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
+                        <img src="assets/decision_boundary_4d_run_2.png" alt="Frontera de decisión 4D de la corrida 2" class="result-image">
+                        <div class="image-caption">
+                            Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1242,31 +1260,40 @@ graph TD
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 3):</h4>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 3):</h4>
                 <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
-                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                    Evolución del error cuadrático medio (MSE) y las visualizaciones de la frontera de decisión en 2D, 3D y 4D para esta ejecución:
                 </p>
                 <div class="graphs-grid">
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
-                        <img src="assets/decision_boundary_run_3.png" alt="Frontera de decisión de la corrida 3" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
+                        <img src="assets/error_curve_run_3.png" alt="Curva de error MSE corrida 3" class="result-image">
                         <div class="image-caption">
-                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                            Evolución del MSE a lo largo de las 100,000 épocas de entrenamiento.
                         </div>
                     </div>
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                        <img src="assets/decision_boundary_3d_run_3.png" alt="Frontera de decisión 3D de la corrida 3" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_3.png" alt="Frontera de decisión de la corrida 3" class="result-image">
                         <div class="image-caption">
-                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                            Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
                         </div>
                     </div>
                 </div>
-                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
-                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
-                    <img src="assets/decision_boundary_4d_run_3.png" alt="Frontera de decisión 4D de la corrida 3" class="result-image">
-                    <div class="image-caption">
-                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                <div class="graphs-grid" style="margin-top: 1rem;">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_3.png" alt="Frontera de decisión 3D de la corrida 3" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
+                        <img src="assets/decision_boundary_4d_run_3.png" alt="Frontera de decisión 4D de la corrida 3" class="result-image">
+                        <div class="image-caption">
+                            Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1362,31 +1389,40 @@ graph TD
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 4):</h4>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 4):</h4>
                 <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
-                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                    Evolución del error cuadrático medio (MSE) y las visualizaciones de la frontera de decisión en 2D, 3D y 4D para esta ejecución:
                 </p>
                 <div class="graphs-grid">
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
-                        <img src="assets/decision_boundary_run_4.png" alt="Frontera de decisión de la corrida 4" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
+                        <img src="assets/error_curve_run_4.png" alt="Curva de error MSE corrida 4" class="result-image">
                         <div class="image-caption">
-                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                            Evolución del MSE a lo largo de las 100,000 épocas de entrenamiento.
                         </div>
                     </div>
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                        <img src="assets/decision_boundary_3d_run_4.png" alt="Frontera de decisión 3D de la corrida 4" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_4.png" alt="Frontera de decisión de la corrida 4" class="result-image">
                         <div class="image-caption">
-                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                            Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
                         </div>
                     </div>
                 </div>
-                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
-                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
-                    <img src="assets/decision_boundary_4d_run_4.png" alt="Frontera de decisión 4D de la corrida 4" class="result-image">
-                    <div class="image-caption">
-                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                <div class="graphs-grid" style="margin-top: 1rem;">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_4.png" alt="Frontera de decisión 3D de la corrida 4" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
+                        <img src="assets/decision_boundary_4d_run_4.png" alt="Frontera de decisión 4D de la corrida 4" class="result-image">
+                        <div class="image-caption">
+                            Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1482,31 +1518,40 @@ graph TD
                     </table>
                 </div>
 
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Fronteras de Decisión en Multi-Dimensiones (Ejecución 5):</h4>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 5):</h4>
                 <p style="font-size: 0.95rem; margin-bottom: 1rem; color: #475569;">
-                    Visualizaciones en 2, 3 y 4 dimensiones del espacio de clasificación y la frontera de decisión aprendida por el perceptrón en esta ejecución:
+                    Evolución del error cuadrático medio (MSE) y las visualizaciones de la frontera de decisión en 2D, 3D y 4D para esta ejecución:
                 </p>
                 <div class="graphs-grid">
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 2D (Plano $X_1 \times X_2$)</h5>
-                        <img src="assets/decision_boundary_run_5.png" alt="Frontera de decisión de la corrida 5" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
+                        <img src="assets/error_curve_run_5.png" alt="Curva de error MSE corrida 5" class="result-image">
                         <div class="image-caption">
-                            Proyección del hiperplano de separación en 2D, asumiendo la entrada constante $X_3 = 1$.
+                            Evolución del MSE a lo largo de las 100,000 épocas de entrenamiento.
                         </div>
                     </div>
                     <div class="image-container">
-                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                        <img src="assets/decision_boundary_3d_run_5.png" alt="Frontera de decisión 3D de la corrida 5" class="result-image">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
+                        <img src="assets/decision_boundary_run_5.png" alt="Frontera de decisión de la corrida 5" class="result-image">
                         <div class="image-caption">
-                            Superficie del hiperplano de decisión en 3D: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                            Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
                         </div>
                     </div>
                 </div>
-                <div class="image-container" style="max-width: 600px; margin: 1.5rem auto;">
-                    <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Coordenadas Espaciales + Probabilidad como Color)</h5>
-                    <img src="assets/decision_boundary_4d_run_5.png" alt="Frontera de decisión 4D de la corrida 5" class="result-image">
-                    <div class="image-caption">
-                        El espacio 3D completo coloreado mediante el gradiente de color según la probabilidad de predicción $\hat{y}$ (4ta dimensión).
+                <div class="graphs-grid" style="margin-top: 1rem;">
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
+                        <img src="assets/decision_boundary_3d_run_5.png" alt="Frontera de decisión 3D de la corrida 5" class="result-image">
+                        <div class="image-caption">
+                            Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
+                        <img src="assets/decision_boundary_4d_run_5.png" alt="Frontera de decisión 4D de la corrida 5" class="result-image">
+                        <div class="image-caption">
+                            Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
+                        </div>
                     </div>
                 </div>
             </div>
