@@ -1,4 +1,200 @@
-<!DOCTYPE html>
+import json
+import os
+
+def generate_html():
+    # 1. Cargar resultados del archivo JSON
+    results_path = os.path.join("assets", "results.json")
+    with open(results_path, "r", encoding="utf-8") as f:
+        results = json.load(f)
+
+    # Convertir pesos a formato de lista JavaScript para el simulador
+    js_model_runs = {}
+    for r in results:
+        run_num = r["run"]
+        fw = r["final_w"]
+        js_model_runs[run_num] = {
+            "w0": fw[0],
+            "w1": fw[1],
+            "w2": fw[2],
+            "w3": fw[3]
+        }
+
+    js_model_runs_str = json.dumps(js_model_runs, indent=8)
+
+    # 2. Generar el bloque de ejecuciones individuales (8b, 8c, 8d, 8e, 8f)
+    run_letters = {1: "b", 2: "c", 3: "d", 4: "e", 5: "f"}
+    runs_html = []
+    
+    for r in results:
+        run_num = r["run"]
+        letter = run_letters[run_num]
+        init_w = r["initial_w"]
+        final_w = r["final_w"]
+        final_y = r["final_y"]
+        mse = r["final_mse"]
+
+        err_a = 0.0 - final_y[0]
+        err_b = 1.0 - final_y[1]
+        err_c = 1.0 - final_y[2]
+        err_d = 0.0 - final_y[3]
+
+        run_block = f"""
+        <!-- ==========================================
+             PÁGINA 8{letter}: RESULTADOS (EJECUCIÓN {run_num})
+             ========================================== -->
+        <div class="unitec-page" id="page-8{letter}">
+            <div class="unitec-page-content">
+                <table class="unitec-header-table">
+                    <tr>
+                        <td class="logo-col">
+                            <div class="unitec-logo-container">
+                                <span class="unitec-logo-text">UNITEC</span>
+                                <span class="unitec-logo-subtext">Universidad Tecnológica de México</span>
+                            </div>
+                        </td>
+                        <td class="title-col">Practicario de Sistemas Inteligentes</td>
+                        <td class="clave-col">Clave: SC8121</td>
+                    </tr>
+                </table>
+
+                <div class="pdf-section">
+                    <div class="pdf-section-header">Resultados obtenidos - Ejecución {run_num}:</div>
+                    <div class="pdf-section-body">
+                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución {run_num}):</h4>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Parámetro</th>
+                                        <th>W0 (Bias/Sesgo)</th>
+                                        <th>W1 (Entrada X1)</th>
+                                        <th>W2 (Entrada X2)</th>
+                                        <th>W3 (Entrada X3)</th>
+                                        <th>Error Final (MSE)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Valor Inicial</strong></td>
+                                        <td>{init_w[0]:+.6f}</td>
+                                        <td>{init_w[1]:+.6f}</td>
+                                        <td>{init_w[2]:+.6f}</td>
+                                        <td>{init_w[3]:+.6f}</td>
+                                        <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">{mse:.4e}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Valor Final</strong></td>
+                                        <td>{final_w[0]:+.6f}</td>
+                                        <td>{final_w[1]:+.6f}</td>
+                                        <td>{final_w[2]:+.6f}</td>
+                                        <td>{final_w[3]:+.6f}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Muestra</th>
+                                        <th>Entrada X1</th>
+                                        <th>Entrada X2</th>
+                                        <th>Entrada X3</th>
+                                        <th>Salida Esperada (Y)</th>
+                                        <th>Salida Obtenida (&Ycirc;)</th>
+                                        <th>Diferencia / Error</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>a</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>0.0</td>
+                                        <td>{final_y[0]:.6f}</td>
+                                        <td>{err_a:+.6f}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>b</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1.0</td>
+                                        <td>{final_y[1]:.6f}</td>
+                                        <td>{err_b:+.6f}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>c</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>1.0</td>
+                                        <td>{final_y[2]:.6f}</td>
+                                        <td>{err_c:+.6f}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>d</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>0.0</td>
+                                        <td>{final_y[3]:.6f}</td>
+                                        <td>{err_d:+.6f}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución {run_num}):</h4>
+                        <div class="graphs-grid">
+                            <div class="image-container">
+                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
+                                <img src="assets/error_curve_run_{run_num}.png" alt="Curva de error MSE corrida {run_num}" class="result-image">
+                                <div class="image-caption">
+                                    Evolución del MSE a lo largo de las 100,000 épocas.
+                                </div>
+                            </div>
+                            <div class="image-container">
+                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \\times X_2$)</h5>
+                                <img src="assets/decision_boundary_run_{run_num}.png" alt="Frontera de decisión de la corrida {run_num}" class="result-image">
+                                <div class="image-caption">
+                                    Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="graphs-grid" style="margin-top: 1rem;">
+                            <div class="image-container">
+                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \\times X_2 \\times X_3$)</h5>
+                                <img src="assets/decision_boundary_3d_run_{run_num}.png" alt="Frontera de decisión 3D de la corrida {run_num}" class="result-image">
+                                <div class="image-caption">
+                                    Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
+                                </div>
+                            </div>
+                            <div class="image-container">
+                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
+                                <img src="assets/decision_boundary_4d_run_{run_num}.png" alt="Frontera de decisión 4D de la corrida {run_num}" class="result-image">
+                                <div class="image-caption">
+                                    Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\\hat{{y}}$.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="unitec-page-footer">
+                <div class="footer-left">Dirección de Tecnología Educativa e Integración de Prácticas</div>
+                <div class="footer-right">Página 8{letter} de 12</div>
+            </div>
+        </div>"""
+        runs_html.append(run_block)
+
+    runs_combined_html = "\n".join(runs_html)
+
+    # 3. Plantilla HTML base en texto plano
+    html_template = """<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -11,8 +207,8 @@
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+                displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
                 processEscapes: true
             },
             options: {
@@ -945,7 +1141,7 @@
                             </li>
                             <li style="margin-bottom: 0.6rem;">Crear una función la cual representará a la función sigmoidal. Recuerda que la fórmula es:
                                 <div class="formula">
-                                    $$\phi(x) = \frac{1}{1 + e^{-x}}$$
+                                    $$\\phi(x) = \\frac{1}{1 + e^{-x}}$$
                                 </div>
                             </li>
                             <li style="margin-bottom: 0.6rem;">Crea una matriz con los pesos iniciales para las 4 entradas. Estos valores deberán ser valores aleatorios.</li>
@@ -985,17 +1181,17 @@
                             <li style="margin-bottom: 0.6rem;">Aplica la función sigmoidal programada en el paso 3, al resultado obtenido en el paso 5.</li>
                             <li style="margin-bottom: 0.6rem;">Crear una función la cual representará a la gradiente de la curva sigmoidal. Para ello recuerda que la fórmula es:
                                 <div class="formula">
-                                    $$\phi'(x) = x \cdot (1 - x)$$
+                                    $$\\phi'(x) = x \\cdot (1 - x)$$
                                 </div>
                             </li>
                             <li style="margin-bottom: 0.6rem;">Calcula el error del resultado obtenido en la propagación hacia adelante, para ello tienes a la siguiente fórmula:
                                 <div class="formula">
-                                    $$\text{{error}} = \text{{salida esperada}} - \text{{salida obtenida}}$$
+                                    $$\\text{{error}} = \\text{{salida esperada}} - \\text{{salida obtenida}}$$
                                 </div>
                             </li>
                             <li style="margin-bottom: 0.6rem;">Posteriormente se calcularán los ajustes en base a la siguiente fórmula:
                                 <div class="formula">
-                                    $$f(x) = \text{{error}} \cdot \text{{gradiente de la curva sigmoidal de la salida}}$$
+                                    $$f(x) = \\text{{error}} \\cdot \\text{{gradiente de la curva sigmoidal de la salida}}$$
                                 </div>
                             </li>
                             <li style="margin-bottom: 0.6rem;">Recalcula los pesos realizando el producto punto entre la matriz que contiene las entradas y la matriz que contiene los ajustes.</li>
@@ -1039,7 +1235,7 @@
                         <div class="only-screen" style="margin-top: 1.5rem;">
                             <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Simulador de Predicción Interactivo (Exclusivo Web):</h4>
                             <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
-                                Selecciona una de las 5 corridas entrenadas a 100,000 épocas y manipula los switches de las entradas para calcular la predicción $\hat{{y}}$ instantáneamente.
+                                Selecciona una de las 5 corridas entrenadas a 100,000 épocas y manipula los switches de las entradas para calcular la predicción $\\hat{{y}}$ instantáneamente.
                             </p>
                             <div class="sim-grid">
                                 <div class="sim-card">
@@ -1082,7 +1278,7 @@
                                 </div>
                                 <div class="output-box">
                                     <div class="sim-title">Salida del Perceptrón</div>
-                                    <div style="font-size: 0.85rem; color: #64748b;">Probabilidad Obtenida ($\hat{{y}}$):</div>
+                                    <div style="font-size: 0.85rem; color: #64748b;">Probabilidad Obtenida ($\\hat{{y}}$):</div>
                                     <div class="output-value" id="sim-output-val">0.000000</div>
                                     <div class="output-z" id="sim-class-val" style="font-weight: 700; margin-bottom: 0.5rem;">Clasificación: -</div>
                                     <div class="output-z" id="sim-math-val" style="font-size: 0.75rem; text-align: center;">-</div>
@@ -1098,761 +1294,7 @@
             </div>
         </div>
 
-        
-        <!-- ==========================================
-             PÁGINA 8b: RESULTADOS (EJECUCIÓN 1)
-             ========================================== -->
-        <div class="unitec-page" id="page-8b">
-            <div class="unitec-page-content">
-                <table class="unitec-header-table">
-                    <tr>
-                        <td class="logo-col">
-                            <div class="unitec-logo-container">
-                                <span class="unitec-logo-text">UNITEC</span>
-                                <span class="unitec-logo-subtext">Universidad Tecnológica de México</span>
-                            </div>
-                        </td>
-                        <td class="title-col">Practicario de Sistemas Inteligentes</td>
-                        <td class="clave-col">Clave: SC8121</td>
-                    </tr>
-                </table>
-
-                <div class="pdf-section">
-                    <div class="pdf-section-header">Resultados obtenidos - Ejecución 1:</div>
-                    <div class="pdf-section-body">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 1):</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Parámetro</th>
-                                        <th>W0 (Bias/Sesgo)</th>
-                                        <th>W1 (Entrada X1)</th>
-                                        <th>W2 (Entrada X2)</th>
-                                        <th>W3 (Entrada X3)</th>
-                                        <th>Error Final (MSE)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Valor Inicial</strong></td>
-                                        <td>-0.586169</td>
-                                        <td>-0.883746</td>
-                                        <td>+0.122696</td>
-                                        <td>+0.814106</td>
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.8755e-05</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Valor Final</strong></td>
-                                        <td>-3.258246</td>
-                                        <td>+10.458589</td>
-                                        <td>-0.113526</td>
-                                        <td>-1.857970</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Muestra</th>
-                                        <th>Entrada X1</th>
-                                        <th>Entrada X2</th>
-                                        <th>Entrada X3</th>
-                                        <th>Salida Esperada (Y)</th>
-                                        <th>Salida Obtenida (&Ycirc;)</th>
-                                        <th>Diferencia / Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>a</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005963</td>
-                                        <td>-0.005963</td>
-                                    </tr>
-                                    <tr>
-                                        <td>b</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.994669</td>
-                                        <td>+0.005331</td>
-                                    </tr>
-                                    <tr>
-                                        <td>c</td>
-                                        <td>1</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.995238</td>
-                                        <td>+0.004762</td>
-                                    </tr>
-                                    <tr>
-                                        <td>d</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005326</td>
-                                        <td>-0.005326</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 1):</h4>
-                        <div class="graphs-grid">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
-                                <img src="assets/error_curve_run_1.png" alt="Curva de error MSE corrida 1" class="result-image">
-                                <div class="image-caption">
-                                    Evolución del MSE a lo largo de las 100,000 épocas.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
-                                <img src="assets/decision_boundary_run_1.png" alt="Frontera de decisión de la corrida 1" class="result-image">
-                                <div class="image-caption">
-                                    Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="graphs-grid" style="margin-top: 1rem;">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                                <img src="assets/decision_boundary_3d_run_1.png" alt="Frontera de decisión 3D de la corrida 1" class="result-image">
-                                <div class="image-caption">
-                                    Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
-                                <img src="assets/decision_boundary_4d_run_1.png" alt="Frontera de decisión 4D de la corrida 1" class="result-image">
-                                <div class="image-caption">
-                                    Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="unitec-page-footer">
-                <div class="footer-left">Dirección de Tecnología Educativa e Integración de Prácticas</div>
-                <div class="footer-right">Página 8b de 12</div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             PÁGINA 8c: RESULTADOS (EJECUCIÓN 2)
-             ========================================== -->
-        <div class="unitec-page" id="page-8c">
-            <div class="unitec-page-content">
-                <table class="unitec-header-table">
-                    <tr>
-                        <td class="logo-col">
-                            <div class="unitec-logo-container">
-                                <span class="unitec-logo-text">UNITEC</span>
-                                <span class="unitec-logo-subtext">Universidad Tecnológica de México</span>
-                            </div>
-                        </td>
-                        <td class="title-col">Practicario de Sistemas Inteligentes</td>
-                        <td class="clave-col">Clave: SC8121</td>
-                    </tr>
-                </table>
-
-                <div class="pdf-section">
-                    <div class="pdf-section-header">Resultados obtenidos - Ejecución 2:</div>
-                    <div class="pdf-section-body">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 2):</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Parámetro</th>
-                                        <th>W0 (Bias/Sesgo)</th>
-                                        <th>W1 (Entrada X1)</th>
-                                        <th>W2 (Entrada X2)</th>
-                                        <th>W3 (Entrada X3)</th>
-                                        <th>Error Final (MSE)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Valor Inicial</strong></td>
-                                        <td>+0.498596</td>
-                                        <td>+0.358366</td>
-                                        <td>+0.076208</td>
-                                        <td>-0.523893</td>
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.8748e-05</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Valor Final</strong></td>
-                                        <td>-2.046930</td>
-                                        <td>+10.458844</td>
-                                        <td>-0.113516</td>
-                                        <td>-3.069419</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Muestra</th>
-                                        <th>Entrada X1</th>
-                                        <th>Entrada X2</th>
-                                        <th>Entrada X3</th>
-                                        <th>Salida Esperada (Y)</th>
-                                        <th>Salida Obtenida (&Ycirc;)</th>
-                                        <th>Diferencia / Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>a</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005962</td>
-                                        <td>-0.005962</td>
-                                    </tr>
-                                    <tr>
-                                        <td>b</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.994670</td>
-                                        <td>+0.005330</td>
-                                    </tr>
-                                    <tr>
-                                        <td>c</td>
-                                        <td>1</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.995239</td>
-                                        <td>+0.004761</td>
-                                    </tr>
-                                    <tr>
-                                        <td>d</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005326</td>
-                                        <td>-0.005326</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 2):</h4>
-                        <div class="graphs-grid">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
-                                <img src="assets/error_curve_run_2.png" alt="Curva de error MSE corrida 2" class="result-image">
-                                <div class="image-caption">
-                                    Evolución del MSE a lo largo de las 100,000 épocas.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
-                                <img src="assets/decision_boundary_run_2.png" alt="Frontera de decisión de la corrida 2" class="result-image">
-                                <div class="image-caption">
-                                    Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="graphs-grid" style="margin-top: 1rem;">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                                <img src="assets/decision_boundary_3d_run_2.png" alt="Frontera de decisión 3D de la corrida 2" class="result-image">
-                                <div class="image-caption">
-                                    Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
-                                <img src="assets/decision_boundary_4d_run_2.png" alt="Frontera de decisión 4D de la corrida 2" class="result-image">
-                                <div class="image-caption">
-                                    Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="unitec-page-footer">
-                <div class="footer-left">Dirección de Tecnología Educativa e Integración de Prácticas</div>
-                <div class="footer-right">Página 8c de 12</div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             PÁGINA 8d: RESULTADOS (EJECUCIÓN 3)
-             ========================================== -->
-        <div class="unitec-page" id="page-8d">
-            <div class="unitec-page-content">
-                <table class="unitec-header-table">
-                    <tr>
-                        <td class="logo-col">
-                            <div class="unitec-logo-container">
-                                <span class="unitec-logo-text">UNITEC</span>
-                                <span class="unitec-logo-subtext">Universidad Tecnológica de México</span>
-                            </div>
-                        </td>
-                        <td class="title-col">Practicario de Sistemas Inteligentes</td>
-                        <td class="clave-col">Clave: SC8121</td>
-                    </tr>
-                </table>
-
-                <div class="pdf-section">
-                    <div class="pdf-section-header">Resultados obtenidos - Ejecución 3:</div>
-                    <div class="pdf-section-body">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 3):</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Parámetro</th>
-                                        <th>W0 (Bias/Sesgo)</th>
-                                        <th>W1 (Entrada X1)</th>
-                                        <th>W2 (Entrada X2)</th>
-                                        <th>W3 (Entrada X3)</th>
-                                        <th>Error Final (MSE)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Valor Inicial</strong></td>
-                                        <td>-0.720632</td>
-                                        <td>-0.618691</td>
-                                        <td>-0.802587</td>
-                                        <td>-0.013184</td>
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.8754e-05</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Valor Final</strong></td>
-                                        <td>-2.911811</td>
-                                        <td>+10.458664</td>
-                                        <td>-0.113669</td>
-                                        <td>-2.204363</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Muestra</th>
-                                        <th>Entrada X1</th>
-                                        <th>Entrada X2</th>
-                                        <th>Entrada X3</th>
-                                        <th>Salida Esperada (Y)</th>
-                                        <th>Salida Obtenida (&Ycirc;)</th>
-                                        <th>Diferencia / Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>a</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005963</td>
-                                        <td>-0.005963</td>
-                                    </tr>
-                                    <tr>
-                                        <td>b</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.994669</td>
-                                        <td>+0.005331</td>
-                                    </tr>
-                                    <tr>
-                                        <td>c</td>
-                                        <td>1</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.995239</td>
-                                        <td>+0.004761</td>
-                                    </tr>
-                                    <tr>
-                                        <td>d</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005326</td>
-                                        <td>-0.005326</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 3):</h4>
-                        <div class="graphs-grid">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
-                                <img src="assets/error_curve_run_3.png" alt="Curva de error MSE corrida 3" class="result-image">
-                                <div class="image-caption">
-                                    Evolución del MSE a lo largo de las 100,000 épocas.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
-                                <img src="assets/decision_boundary_run_3.png" alt="Frontera de decisión de la corrida 3" class="result-image">
-                                <div class="image-caption">
-                                    Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="graphs-grid" style="margin-top: 1rem;">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                                <img src="assets/decision_boundary_3d_run_3.png" alt="Frontera de decisión 3D de la corrida 3" class="result-image">
-                                <div class="image-caption">
-                                    Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
-                                <img src="assets/decision_boundary_4d_run_3.png" alt="Frontera de decisión 4D de la corrida 3" class="result-image">
-                                <div class="image-caption">
-                                    Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="unitec-page-footer">
-                <div class="footer-left">Dirección de Tecnología Educativa e Integración de Prácticas</div>
-                <div class="footer-right">Página 8d de 12</div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             PÁGINA 8e: RESULTADOS (EJECUCIÓN 4)
-             ========================================== -->
-        <div class="unitec-page" id="page-8e">
-            <div class="unitec-page-content">
-                <table class="unitec-header-table">
-                    <tr>
-                        <td class="logo-col">
-                            <div class="unitec-logo-container">
-                                <span class="unitec-logo-text">UNITEC</span>
-                                <span class="unitec-logo-subtext">Universidad Tecnológica de México</span>
-                            </div>
-                        </td>
-                        <td class="title-col">Practicario de Sistemas Inteligentes</td>
-                        <td class="clave-col">Clave: SC8121</td>
-                    </tr>
-                </table>
-
-                <div class="pdf-section">
-                    <div class="pdf-section-header">Resultados obtenidos - Ejecución 4:</div>
-                    <div class="pdf-section-body">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 4):</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Parámetro</th>
-                                        <th>W0 (Bias/Sesgo)</th>
-                                        <th>W1 (Entrada X1)</th>
-                                        <th>W2 (Entrada X2)</th>
-                                        <th>W3 (Entrada X3)</th>
-                                        <th>Error Final (MSE)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Valor Inicial</strong></td>
-                                        <td>-0.735498</td>
-                                        <td>+0.815864</td>
-                                        <td>-0.078455</td>
-                                        <td>-0.043092</td>
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.8743e-05</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Valor Final</strong></td>
-                                        <td>-2.904423</td>
-                                        <td>+10.459007</td>
-                                        <td>-0.113500</td>
-                                        <td>-2.212017</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Muestra</th>
-                                        <th>Entrada X1</th>
-                                        <th>Entrada X2</th>
-                                        <th>Entrada X3</th>
-                                        <th>Salida Esperada (Y)</th>
-                                        <th>Salida Obtenida (&Ycirc;)</th>
-                                        <th>Diferencia / Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>a</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005962</td>
-                                        <td>-0.005962</td>
-                                    </tr>
-                                    <tr>
-                                        <td>b</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.994670</td>
-                                        <td>+0.005330</td>
-                                    </tr>
-                                    <tr>
-                                        <td>c</td>
-                                        <td>1</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.995239</td>
-                                        <td>+0.004761</td>
-                                    </tr>
-                                    <tr>
-                                        <td>d</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005325</td>
-                                        <td>-0.005325</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 4):</h4>
-                        <div class="graphs-grid">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
-                                <img src="assets/error_curve_run_4.png" alt="Curva de error MSE corrida 4" class="result-image">
-                                <div class="image-caption">
-                                    Evolución del MSE a lo largo de las 100,000 épocas.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
-                                <img src="assets/decision_boundary_run_4.png" alt="Frontera de decisión de la corrida 4" class="result-image">
-                                <div class="image-caption">
-                                    Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="graphs-grid" style="margin-top: 1rem;">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                                <img src="assets/decision_boundary_3d_run_4.png" alt="Frontera de decisión 3D de la corrida 4" class="result-image">
-                                <div class="image-caption">
-                                    Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
-                                <img src="assets/decision_boundary_4d_run_4.png" alt="Frontera de decisión 4D de la corrida 4" class="result-image">
-                                <div class="image-caption">
-                                    Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="unitec-page-footer">
-                <div class="footer-left">Dirección de Tecnología Educativa e Integración de Prácticas</div>
-                <div class="footer-right">Página 8e de 12</div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             PÁGINA 8f: RESULTADOS (EJECUCIÓN 5)
-             ========================================== -->
-        <div class="unitec-page" id="page-8f">
-            <div class="unitec-page-content">
-                <table class="unitec-header-table">
-                    <tr>
-                        <td class="logo-col">
-                            <div class="unitec-logo-container">
-                                <span class="unitec-logo-text">UNITEC</span>
-                                <span class="unitec-logo-subtext">Universidad Tecnológica de México</span>
-                            </div>
-                        </td>
-                        <td class="title-col">Practicario de Sistemas Inteligentes</td>
-                        <td class="clave-col">Clave: SC8121</td>
-                    </tr>
-                </table>
-
-                <div class="pdf-section">
-                    <div class="pdf-section-header">Resultados obtenidos - Ejecución 5:</div>
-                    <div class="pdf-section-body">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Pesos iniciales y finales (Ejecución 5):</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Parámetro</th>
-                                        <th>W0 (Bias/Sesgo)</th>
-                                        <th>W1 (Entrada X1)</th>
-                                        <th>W2 (Entrada X2)</th>
-                                        <th>W3 (Entrada X3)</th>
-                                        <th>Error Final (MSE)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Valor Inicial</strong></td>
-                                        <td>-0.023180</td>
-                                        <td>-0.884865</td>
-                                        <td>+0.893163</td>
-                                        <td>-0.270628</td>
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: bold; color: var(--primary-light);">2.8754e-05</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Valor Final</strong></td>
-                                        <td>-2.434442</td>
-                                        <td>+10.458621</td>
-                                        <td>-0.113344</td>
-                                        <td>-2.681891</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Verificación de Convergencia de Datos:</h4>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Muestra</th>
-                                        <th>Entrada X1</th>
-                                        <th>Entrada X2</th>
-                                        <th>Entrada X3</th>
-                                        <th>Salida Esperada (Y)</th>
-                                        <th>Salida Obtenida (&Ycirc;)</th>
-                                        <th>Diferencia / Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>a</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005962</td>
-                                        <td>-0.005962</td>
-                                    </tr>
-                                    <tr>
-                                        <td>b</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.994669</td>
-                                        <td>+0.005331</td>
-                                    </tr>
-                                    <tr>
-                                        <td>c</td>
-                                        <td>1</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1.0</td>
-                                        <td>0.995238</td>
-                                        <td>+0.004762</td>
-                                    </tr>
-                                    <tr>
-                                        <td>d</td>
-                                        <td>0</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>0.0</td>
-                                        <td>0.005327</td>
-                                        <td>-0.005327</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);">Curva de Error y Fronteras de Decisión (Ejecución 5):</h4>
-                        <div class="graphs-grid">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Curva de Aprendizaje (Error MSE)</h5>
-                                <img src="assets/error_curve_run_5.png" alt="Curva de error MSE corrida 5" class="result-image">
-                                <div class="image-caption">
-                                    Evolución del MSE a lo largo de las 100,000 épocas.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 2D (Plano $X_1 \times X_2$)</h5>
-                                <img src="assets/decision_boundary_run_5.png" alt="Frontera de decisión de la corrida 5" class="result-image">
-                                <div class="image-caption">
-                                    Proyección del hiperplano de separación en 2D, con entrada constante $X_3 = 1$.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="graphs-grid" style="margin-top: 1rem;">
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Frontera 3D (Espacio $X_1 \times X_2 \times X_3$)</h5>
-                                <img src="assets/decision_boundary_3d_run_5.png" alt="Frontera de decisión 3D de la corrida 5" class="result-image">
-                                <div class="image-caption">
-                                    Superficie del hiperplano de decisión: $W_0 + W_1 X_1 + W_2 X_2 + W_3 X_3 = 0$.
-                                </div>
-                            </div>
-                            <div class="image-container">
-                                <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">Visualización 4D (Probabilidad como Color)</h5>
-                                <img src="assets/decision_boundary_4d_run_5.png" alt="Frontera de decisión 4D de la corrida 5" class="result-image">
-                                <div class="image-caption">
-                                    Espacio tridimensional coloreado según la probabilidad de predicción sigmoidal $\hat{y}$.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="unitec-page-footer">
-                <div class="footer-left">Dirección de Tecnología Educativa e Integración de Prácticas</div>
-                <div class="footer-right">Página 8f de 12</div>
-            </div>
-        </div>
+        __INDIVIDUAL_RUNS_PLACEHOLDER__
 
         <!-- ==========================================
              PÁGINA 8g: RESULTADOS (EVIDENCIA & CURVA COMBINADA)
@@ -1932,7 +1374,7 @@
                         </p>
                         <ol style="margin-left: 1.5rem;">
                             <li style="margin-bottom: 0.75rem;">
-                                <strong>Separabilidad Lineal y Coeficientes:</strong> El conjunto de datos propuesto presenta un comportamiento lineal separable donde el resultado esperado $Y$ es idéntico al valor de la entrada $X_1$. La red identificó correctamente esta regla al asignar un peso extremadamente alto a $W_1$ (convergencia a $\approx +10.46$) y un peso irrelevante cercano a cero a $W_2$ (convergencia a $\approx -0.11$).
+                                <strong>Separabilidad Lineal y Coeficientes:</strong> El conjunto de datos propuesto presenta un comportamiento lineal separable donde el resultado esperado $Y$ es idéntico al valor de la entrada $X_1$. La red identificó correctamente esta regla al asignar un peso extremadamente alto a $W_1$ (convergencia a $\\approx +10.46$) y un peso irrelevante cercano a cero a $W_2$ (convergencia a $\\approx -0.11$).
                             </li>
                             <li style="margin-bottom: 0.75rem;">
                                 <strong>Impacto de la Inicialización Aleatoria:</strong> Aunque la inicialización aleatoria de pesos conduce a distintas combinaciones algebraicas de valores de pesos finales en cada ejecución (particularmente distribuyendo la compensación del sesgo y $W_3$), el comportamiento predictivo final de la neurona se mantiene idéntico. Esto enfatiza la robustez y la convergencia del algoritmo hacia soluciones equivalentes dentro del espacio de búsqueda.
@@ -2035,38 +1477,7 @@
     <!-- Script del Simulador Interactivo -->
     <script>
         // Datos de los modelos de las 5 ejecuciones a 100,000 épocas (actualizados con la última corrida)
-        const modelRuns = {
-        "1": {
-                "w0": -3.2582457122947535,
-                "w1": 10.458589317855854,
-                "w2": -0.11352565899753268,
-                "w3": -1.8579704013816278
-        },
-        "2": {
-                "w0": -2.046929597886249,
-                "w1": 10.458844037082798,
-                "w2": -0.11351581448467288,
-                "w3": -3.0694193925364304
-        },
-        "3": {
-                "w0": -2.911811025375072,
-                "w1": 10.4586643286849,
-                "w2": -0.11366880080822613,
-                "w3": -2.204363174196863
-        },
-        "4": {
-                "w0": -2.904422516828127,
-                "w1": 10.459007001495483,
-                "w2": -0.11349992767783926,
-                "w3": -2.2120168066137076
-        },
-        "5": {
-                "w0": -2.434442138453582,
-                "w1": 10.458621178625036,
-                "w2": -0.11334417878542967,
-                "w3": -2.6818906237375555
-        }
-};
+        const modelRuns = __JS_MODEL_RUNS__;
 
         function sigmoid(z) {
             return 1.0 / (1.0 + Math.exp(-z));
@@ -2127,3 +1538,15 @@
     </script>
 </body>
 </html>
+"""
+
+    final_html = html_template.replace("__INDIVIDUAL_RUNS_PLACEHOLDER__", runs_combined_html)
+    final_html = final_html.replace("__JS_MODEL_RUNS__", js_model_runs_str)
+
+    output_path = "Practica_3_SI_Melchor_Jose.html"
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(final_html)
+    print("Reporte HTML reformateado exitosamente en Practica_3_SI_Melchor_Jose.html")
+
+if __name__ == "__main__":
+    generate_html()
